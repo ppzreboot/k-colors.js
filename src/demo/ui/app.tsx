@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { KCPP, Color } from '../../lib/index'
+import { Color, Colors, KCPP_worker } from '../../lib/mod'
 
 export
 function App() {
@@ -69,14 +69,18 @@ function useInput_k() {
 
 function usePallet(img: HTMLImageElement | null, k: number | null) {
   const kcpp = useMemo(
-    () => img ? new KCPP(img) : null,
+    () => img ? new KCPP_worker(img) : null,
     [img],
   )
 
-  const colors = useMemo(
-    () => (kcpp && k) ? kcpp.k_colors_pp(k).colors : null,
-    [kcpp, k],
-  )
+  const [colors, set_colors] = useState<Colors | null>(null)
+  useEffect(() => {
+    if (kcpp && k) {
+      kcpp.k_colors_pp(k).then(res =>
+        set_colors(res.colors)
+      )
+    }
+  }, [kcpp, k])
 
   const [focused_color, set_focused_color] = useState<Color | null>(null)
   useEffect(() => {
