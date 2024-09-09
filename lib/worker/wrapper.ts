@@ -1,5 +1,4 @@
-import K_worker from './worker.ts?worker'
-import { KCPP_result } from '../'
+import type { KCPP_result } from '../types.ts'
 
 interface Response {
   id: number
@@ -25,7 +24,7 @@ class KCPP_worker {
       img_data = ctx.getImageData(0, 0, img_data.width, img_data.height)
     }
 
-    this.worker = new K_worker()
+    this.worker = new Worker(worker_script)
 
     this.worker.postMessage({
       type: 'init',
