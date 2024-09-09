@@ -20,9 +20,10 @@ class KCPP {
   }
 
   private ret(result: KMPP_Result) {
+    const means = result instanceof Array ? result : result.means
     return {
       kmpp_result: result,
-      colors: round_result(result.means as Colors),
+      colors: round_result(means as Colors),
     }
   }
 
