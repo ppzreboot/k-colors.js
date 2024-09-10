@@ -7,8 +7,7 @@ export
 class KCPP {
   private readonly kmpp: KMPP
   constructor(img_data: HTMLImageElement | OffscreenCanvas | HTMLCanvasElement | ImageData) {
-    if (!(img_data instanceof ImageData))
-      img_data = get_image_data(img_data)
+    img_data = get_image_data(img_data)
     this.kmpp = new KMPP({
       data: get_colors(img_data),
       dimension: 4,

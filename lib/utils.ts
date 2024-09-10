@@ -1,7 +1,10 @@
 type CanvasContext = CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D
 
 export
-function get_image_data(canvas: HTMLImageElement | OffscreenCanvas | HTMLCanvasElement) {
+function get_image_data(canvas: HTMLImageElement | OffscreenCanvas | HTMLCanvasElement | ImageData): ImageData {
+  if (canvas instanceof ImageData)
+    return canvas
+
   var ctx: CanvasContext
   if (canvas instanceof HTMLImageElement) {
     const img = canvas

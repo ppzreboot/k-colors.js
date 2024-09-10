@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
-import { KCPP } from 'k-colors'
+import KCPP_worker from 'k-colors/worker/worker?worker'
+import { KCPP_worker_wrapper } from 'k-colors/worker/wrapper'
 import type { Color, Colors } from 'k-colors/types'
 
 export
@@ -69,17 +70,21 @@ function useInput_k() {
 }
 
 function usePallet(img: HTMLImageElement | null, k: number | null) {
+  const [working, set_working] = useState(false)
+
   const kcpp = useMemo(
-    () => img ? new KCPP(img) : null,
+    () => img ? new KCPP_worker_wrapper(new KCPP_worker(), img) : null,
     [img],
   )
 
   const [colors, set_colors] = useState<Colors | null>(null)
   useEffect(() => {
     if (kcpp && k) {
-      set_colors(
-        kcpp.k_colors_pp(k).colors
-      )
+      set_working(true)
+      kcpp.k_colors_pp(k).then(result => {
+        set_colors(result.colors)
+        set_working(false)
+      })
     }
   }, [kcpp, k])
 
@@ -92,18 +97,22 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
 
   return {
     colors,
-    el: colors &&
-      <div className='block'>
-        <ul className='pallet'>
-          {colors.map((color, i) =>
-            <li
-              key={i}
-              style={{ backgroundColor: `rgba(${color.join(',')})` }}
-              onMouseEnter={() => set_focused_color(color)}
-            />
-          )}
-        </ul>
-        <span>{focused_color?.join(',')}</span>
-      </div>
+    el: working
+      ? 'working'
+      : (
+        colors &&
+          <div className='block'>
+            <ul className='pallet'>
+              {colors.map((color, i) =>
+                <li
+                  key={i}
+                  style={{ backgroundColor: `rgba(${color.join(',')})` }}
+                  onMouseEnter={() => set_focused_color(color)}
+                />
+              )}
+            </ul>
+            <span>{focused_color?.join(',')}</span>
+          </div>
+      )
   }
 }

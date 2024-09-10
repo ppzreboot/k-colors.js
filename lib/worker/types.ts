@@ -1,4 +1,4 @@
-import { KCPP_result } from '../types.ts'
+import { KCPP_result } from '../types'
 
 interface Request_message_init {
   type: 'init'
@@ -15,6 +15,11 @@ interface Request_message_k_means_pp {
   id: number
   data: number
 }
+
+export
+type T_job_type_id = 'k_colors' | 'k_colors_pp'
+export
+type T_job_message = Request_message_k_means | Request_message_k_means_pp
 
 export
 type Request_message = Request_message_init | Request_message_k_means | Request_message_k_means_pp

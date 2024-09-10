@@ -3,42 +3,54 @@ import { build } from 'esbuild'
 import { dtsPlugin } from 'esbuild-plugin-d.ts'
 
 const outdir = './dist/'
+main()
 
 async function main() {
   // clean dist
   fs.rmSync(outdir, { recursive: true, force: true })
-
   // create dist
   fs.mkdirSync(outdir)
+
   // copy readme.md
   fs.copyFileSync('./readme.md', outdir + 'readme.md')
   // write package.json
   write_package()
 
-  // build core
+  // build lib
   await build({
-    entryPoints: ['./lib/kcpp.ts'],
+    entryPoints: [
+      './lib/**/*',
+    ],
     target: 'es2020',
     format: 'esm',
-    external: ['k-means-pp'],
-    bundle: true,
+    // external: ['k-means-pp'],
+    bundle: false,
+    logLevel: 'debug',
     outdir,
 
     plugins: [dtsPlugin()],
   })
-
 }
-
-main()
 
 function write_package() {
-  write_json({
+  fs.writeFileSync(outdir + 'package.json', JSON.stringify({
     name: 'k-colors',
-    version: '0.0.0',
+    version: '0.0.1',
     main: 'kcpp.js',
-  }, 'package.json')
-}
-
-function write_json(data, path) {
-  fs.writeFileSync(outdir + path, JSON.stringify(data, null, 2))
+    keywords: [
+      'color',
+      'k-means++',
+      'k-means',
+      'kmeans'
+    ],
+    author: 'ppz',
+    repository: {
+      type: 'git',
+      url: 'git+https://github.com/ppzreboot/k-colors.js.git'
+    },
+    license: 'Unlicense',
+    bugs: {
+      url: 'https://github.com/ppzreboot/k-colors.js/issues'
+    },
+  }, null, 2))
 }

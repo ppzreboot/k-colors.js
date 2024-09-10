@@ -1,10 +1,11 @@
 {
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
   },
   "dependencies": {
-    "k-colors": "file:../dist/k-colors-0.0.0.tgz",
+    "k-colors": "file:../dist/k-colors-0.0.1.tgz",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
