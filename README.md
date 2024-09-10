@@ -1,4 +1,6 @@
 # k-colors.js
+[demo](https://ppzreboot.github.io/k-colors.js/) | [github](https://github.com/ppzreboot/k-colors.js) | [npm](https://www.npmjs.com/package/k-colors)
+
 A JavaScript library for extracting dominant colors from images using the k-means/k-means++ algorithm.
 
 ##### Install

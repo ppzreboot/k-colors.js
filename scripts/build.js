@@ -35,7 +35,7 @@ async function main() {
 function write_package() {
   fs.writeFileSync(outdir + 'package.json', JSON.stringify({
     name: 'k-colors',
-    version: '0.0.1',
+    version: '0.0.2',
     main: 'kcpp.js',
     keywords: [
       'color',
@@ -44,6 +44,9 @@ function write_package() {
       'kmeans'
     ],
     author: 'ppz',
+    dependencies: {
+      'k-means-pp': '>=2.1.0',
+    },
     repository: {
       type: 'git',
       url: 'git+https://github.com/ppzreboot/k-colors.js.git'
