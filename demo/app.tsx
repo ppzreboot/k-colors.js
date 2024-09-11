@@ -10,7 +10,15 @@ function App() {
   const pallet = usePallet(input_img.img, input_k.k)
 
   return <div>
-    <h1>k-colors.js</h1>
+    <hgroup>
+      <h1>k-colors.js</h1>
+      <p>Extract dominant colors from images using the k-means/k-means++ algorithm.</p>
+      <p>
+        links: <a
+          href='https://github.com/ppzreboot/k-colors.js'>k-colors.js</a> | <a
+          href='https://github.com/ppzreboot/k-means-pp.js'>k-means-pp.js</a>
+      </p>
+    </hgroup>
 
     {input_img.el}
     {input_k.el}
@@ -40,7 +48,7 @@ function useInput_img() {
         }}
       />
       {src &&
-        <img className='block' src={src} />
+        <img className='block' src={src} style={{ maxWidth: `min(500px, 100%)` }} />
       }
     </div>
   }
@@ -98,7 +106,7 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
   return {
     colors,
     el: working
-      ? 'working'
+      ? 'working...'
       : (
         colors &&
           <div className='block'>
@@ -111,7 +119,7 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
                 />
               )}
             </ul>
-            <span>{focused_color?.join(',')}</span>
+            <span>rgba({focused_color?.join(',')})</span>
           </div>
       )
   }

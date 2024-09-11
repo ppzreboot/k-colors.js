@@ -3,6 +3,8 @@
 
 A JavaScript library for extracting dominant colors from images using the k-means/k-means++ algorithm.
 
+This lib is based on [k-means-pp.js](https://github.com/ppzreboot/k-means-pp.js).
+
 ##### Install
 ``` bash
 npm install k-colors
