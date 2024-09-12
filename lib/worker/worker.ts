@@ -12,14 +12,14 @@ self.onmessage = function(event: MessageEvent) {
     case 'k_colors':
       const msg: Response_message = {
         id,
-        result: kcpp.k_colors(data)
+        result: kcpp.k_colors(data).kmpp_result
       }
       postMessage(msg)
       break
     case 'k_colors_pp':
       const pp_msg: Response_message = {
         id,
-        result: kcpp.k_colors_pp(data)
+        result: kcpp.k_colors_pp(data).kmpp_result
       }
       postMessage(pp_msg)
       break

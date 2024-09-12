@@ -1,20 +1,23 @@
-import type { KCPP_result } from '../types'
+import type { KMPP_result } from '../types'
 import { get_image_data } from '../utils.js'
 import type { Response_message, T_job_type_id, T_job_message } from './types'
+import { KCPP_result } from '../kcpp'
 
 let id_index = 0
 
 export
 class KCPP_worker_wrapper {
-  map = new Map<number, (result: KCPP_result) => void>()
+  private readonly img_data: ImageData
+  map = new Map<number, (result: KMPP_result) => void>()
 
   constructor(
     private worker: Worker,
     img_data: HTMLImageElement | OffscreenCanvas | ImageData,
   ) {
+    this.img_data = get_image_data(img_data)
     this.worker.postMessage({
       type: 'init',
-      data: get_image_data(img_data),
+      data: this.img_data,
     })
 
     this.worker.onmessage = (event: MessageEvent) => {
@@ -32,15 +35,15 @@ class KCPP_worker_wrapper {
       data: k,
     }
     this.worker.postMessage(msg)
-    return new Promise<KCPP_result>(resolve =>
+    return new Promise<KMPP_result>(resolve =>
       this.map.set(id, resolve)
     )
   }
 
-  k_colors(k: number) {
-    return this.post(k, 'k_colors')
+  async k_colors(k: number): Promise<KCPP_result> {
+    return new KCPP_result(await this.post(k, 'k_colors'), this.img_data)
   }
-  k_colors_pp(k: number) {
-    return this.post(k, 'k_colors_pp')
+  async k_colors_pp(k: number): Promise<KCPP_result> {
+    return new KCPP_result(await this.post(k, 'k_colors_pp'), this.img_data)
   }
 }

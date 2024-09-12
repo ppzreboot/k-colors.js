@@ -1,4 +1,4 @@
-import { KCPP_result } from '../types'
+import { KMPP_result } from '../types'
 
 interface Request_message_init {
   type: 'init'
@@ -27,5 +27,5 @@ type Request_message = Request_message_init | Request_message_k_means | Request_
 export
 interface Response_message {
   id: number
-  result: KCPP_result
+  result: KMPP_result
 }

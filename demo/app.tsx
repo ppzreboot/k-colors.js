@@ -86,11 +86,13 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
   )
 
   const [colors, set_colors] = useState<Colors | null>(null)
+  const [clustered_img, set_clustered_img] = useState<string | null>(null)
   useEffect(() => {
     if (kcpp && k) {
       set_working(true)
       kcpp.k_colors_pp(k).then(result => {
         set_colors(result.colors)
+        set_clustered_img(result.get_clustered_dataurl())
         set_working(false)
       })
     }
@@ -107,20 +109,25 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
     colors,
     el: working
       ? 'working...'
-      : (
-        colors &&
-          <div className='block'>
-            <ul className='pallet'>
-              {colors.map((color, i) =>
-                <li
-                  key={i}
-                  style={{ backgroundColor: `rgba(${color.join(',')})` }}
-                  onMouseEnter={() => set_focused_color(color)}
-                />
-              )}
-            </ul>
-            <span>rgba({focused_color?.join(',')})</span>
-          </div>
-      )
+      : 
+        <>
+          {colors &&
+            <div className='block'>
+              <ul className='pallet'>
+                {colors.map((color, i) =>
+                  <li
+                    key={i}
+                    style={{ backgroundColor: `rgba(${color.join(',')})` }}
+                    onMouseEnter={() => set_focused_color(color)}
+                  />
+                )}
+              </ul>
+              <span>rgba({focused_color?.join(',')})</span>
+            </div>
+          }
+          {clustered_img &&
+            <img src={clustered_img} />
+          }
+        </>
   }
 }

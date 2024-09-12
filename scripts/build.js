@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import { build } from 'esbuild'
 import { dtsPlugin } from 'esbuild-plugin-d.ts'
+import pkg from '../package.json' with { type: 'json' }
 
 const outdir = './dist/'
 main()
@@ -35,7 +36,7 @@ async function main() {
 function write_package() {
   fs.writeFileSync(outdir + 'package.json', JSON.stringify({
     name: 'k-colors',
-    version: '0.0.2',
+    version: '0.0.3',
     main: 'kcpp.js',
     keywords: [
       'color',
@@ -44,9 +45,7 @@ function write_package() {
       'kmeans'
     ],
     author: 'ppz',
-    dependencies: {
-      'k-means-pp': '>=2.1.0',
-    },
+    dependencies: pkg.dependencies,
     repository: {
       type: 'git',
       url: 'git+https://github.com/ppzreboot/k-colors.js.git'
