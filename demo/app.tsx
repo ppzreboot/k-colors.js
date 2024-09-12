@@ -3,6 +3,10 @@ import KCPP_worker from 'k-colors/worker/worker?worker'
 import { KCPP_worker_wrapper } from 'k-colors/worker/wrapper'
 import type { Color, Colors } from 'k-colors/types'
 
+const img_style = {
+  maxWidth: `min(500px, 100%)`,
+}
+
 export
 function App() {
   const input_img = useInput_img()
@@ -48,7 +52,7 @@ function useInput_img() {
         }}
       />
       {src &&
-        <img className='block' src={src} style={{ maxWidth: `min(500px, 100%)` }} />
+        <img className='block' src={src} style={img_style} />
       }
     </div>
   }
@@ -113,6 +117,7 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
         <>
           {colors &&
             <div className='block'>
+              <h2>Pallet</h2>
               <ul className='pallet'>
                 {colors.map((color, i) =>
                   <li
@@ -126,7 +131,11 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
             </div>
           }
           {clustered_img &&
-            <img src={clustered_img} />
+            <>
+              <h2>Clustered Image</h2>
+              <img src={clustered_img} className='block' style={img_style} />
+              <a href={clustered_img} download='clustered.png'>download</a>
+            </>
           }
         </>
   }

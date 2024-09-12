@@ -16,8 +16,10 @@ import { KCPP } from 'k-colors'
 
 // the `img` below is a HTMLImageElement or HTMLCanvasElement or OffscreenCanvas or ImageData
 const kcpp = new KCPP(img)
-const colors = kcpp.k_colors_pp(3).colors
-console.log(colors) // [ [255,255,255,200], [100,200,200,255], [0,10,20,255] ]
+const result = kcpp.k_colors_pp(3)
+// `result.get_clustered_dataurl()` returns a dataurl of the clustered image
+const dataurl = result.get_clustered_dataurl()
+console.log(result.colors) // [ [255,255,255,200], [100,200,200,255], [0,10,20,255] ]
 ```
 
 ##### web worker (vite)
@@ -28,5 +30,6 @@ import { KCPP_worker_wrapper } from 'k-colors/worker/wrapper'
 
 const kcpp = new KCPP_worker_wrapper(new KCPP_worker(), img)
 const result = await kcpp.k_colors_pp(3)
+const dataurl = result.get_clustered_dataurl()
 console.log(result.colors) // [ [255,255,255,200], [100,200,200,255], [0,10,20,255] ]
 ```
