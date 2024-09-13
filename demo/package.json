@@ -5,7 +5,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "k-colors": "^0.0.3",
+    "k-colors": "file:../dist/k-colors-0.0.4.tgz",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

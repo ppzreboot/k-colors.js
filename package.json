@@ -12,6 +12,6 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "k-means-pp": ">=2.2.0"
+    "k-means-pp": ">=2.2.1"
   }
 }

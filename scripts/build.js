@@ -36,7 +36,7 @@ async function main() {
 function write_package() {
   fs.writeFileSync(outdir + 'package.json', JSON.stringify({
     name: 'k-colors',
-    version: '0.0.3',
+    version: '0.0.4',
     main: 'kcpp.js',
     keywords: [
       'color',
