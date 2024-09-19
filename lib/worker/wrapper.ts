@@ -1,4 +1,4 @@
-import type { KMPP_result } from '../types'
+import type { Result, Points, k_means_type } from 'k-means-pp'
 import { get_image_data } from '../utils.js'
 import type { Response_message, T_job_type_id, T_job_message } from './types'
 import { KCPP_result } from '../kcpp'
@@ -8,7 +8,7 @@ let id_index = 0
 export
 class KCPP_worker_wrapper {
   private readonly img_data: ImageData
-  map = new Map<number, (result: KMPP_result) => void>()
+  map = new Map<number, (result: Result | Points) => void>()
 
   constructor(
     private worker: Worker,
@@ -35,15 +35,12 @@ class KCPP_worker_wrapper {
       data: k,
     }
     this.worker.postMessage(msg)
-    return new Promise<KMPP_result>(resolve =>
+    return new Promise<Result | Points>(resolve =>
       this.map.set(id, resolve)
     )
   }
 
-  async k_colors(k: number): Promise<KCPP_result> {
-    return new KCPP_result(await this.post(k, 'k_colors'), this.img_data)
-  }
-  async k_colors_pp(k: number): Promise<KCPP_result> {
-    return new KCPP_result(await this.post(k, 'k_colors_pp'), this.img_data)
+  async dominant(k: number, algorithm: k_means_type = 'k_means_pp'): Promise<KCPP_result> {
+    return new KCPP_result(await this.post(k, algorithm), this.img_data)
   }
 }

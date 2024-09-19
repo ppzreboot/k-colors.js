@@ -1,6 +1,6 @@
-import { KMPP } from 'k-means-pp'
+import { KMPP, Result, Points, k_means_type } from 'k-means-pp'
 import { get_image_data } from './utils'
-import type { Color, Colors, KMPP_result, I_KCPP_result_data } from './types'
+import type { Color, Colors, I_KCPP_result_data } from './types'
 
 /** 
  * KCPP (K-Colors Plus Plus)
@@ -21,21 +21,12 @@ class KCPP {
   }
 
   /** 
-   * Calculates k dominant colors using the k-means algorithm
+   * Calculates k dominant colors using the k-means or k-means++ algorithm
    * @param k The number of colors to extract
    * @returns An object containing the KMPP result and rounded color values
    */
-  k_colors(k: number): KCPP_result {
-    return new KCPP_result(this.kmpp.k_means(k), this.img_data)
-  }
-
-  /** 
-   * Calculates k dominant colors using the k-means++ algorithm
-   * @param k The number of colors to extract
-   * @returns An object containing the KMPP result and rounded color values
-   */
-  k_colors_pp(k: number): KCPP_result {
-    return new KCPP_result(this.kmpp.k_means_pp(k), this.img_data)
+  dominant(k: number, algorithm: k_means_type = 'k_means_pp'): KCPP_result {
+    return new KCPP_result(this.kmpp.cluster(k, algorithm), this.img_data)
   }
 }
 
@@ -56,7 +47,7 @@ export
 class KCPP_result implements I_KCPP_result_data {
   readonly colors: Colors
   constructor(
-    public readonly  kmpp_result: KMPP_result,
+    public readonly  kmpp_result: Result | Points,
     private readonly img_data: ImageData,
   ) {
     const means = kmpp_result instanceof Array ? kmpp_result : kmpp_result.means

@@ -94,7 +94,7 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
   useEffect(() => {
     if (kcpp && k) {
       set_working(true)
-      kcpp.k_colors_pp(k).then(result => {
+      kcpp.dominant(k).then(result => {
         set_colors(result.colors)
         set_clustered_img(result.get_clustered_dataurl())
         set_working(false)

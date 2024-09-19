@@ -9,17 +9,17 @@ self.onmessage = function(event: MessageEvent) {
     case 'init':
       kcpp = new KCPP(data)
       break
-    case 'k_colors':
+    case 'k_means':
       const msg: Response_message = {
         id,
-        result: kcpp.k_colors(data).kmpp_result
+        result: kcpp.dominant(data, 'k_means').kmpp_result
       }
       postMessage(msg)
       break
-    case 'k_colors_pp':
+    case 'k_means_pp':
       const pp_msg: Response_message = {
         id,
-        result: kcpp.k_colors_pp(data).kmpp_result
+        result: kcpp.dominant(data, 'k_means_pp').kmpp_result
       }
       postMessage(pp_msg)
       break
