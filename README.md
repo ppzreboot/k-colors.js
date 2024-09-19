@@ -14,10 +14,9 @@ npm install k-colors
 ``` ts
 import { KCPP } from 'k-colors'
 
-// the `img` below is a HTMLImageElement or HTMLCanvasElement or OffscreenCanvas or ImageData
-const kcpp = new KCPP(img)
+
+const kcpp = new KCPP(img) // the `img` is a HTMLImageElement or HTMLCanvasElement or OffscreenCanvas or ImageData
 const result = kcpp.k_colors_pp(3)
-// `result.get_clustered_dataurl()` returns a dataurl of the clustered image
 const dataurl = result.get_clustered_dataurl()
 console.log(result.colors) // [ [255,255,255,200], [100,200,200,255], [0,10,20,255] ]
 ```
@@ -25,11 +24,21 @@ console.log(result.colors) // [ [255,255,255,200], [100,200,200,255], [0,10,20,2
 ##### web worker (vite)
 
 ``` ts
-import KCPP_worker from 'k-colors/worker/worker?worker'
+import KCPP_worker from 'k-colors/worker?worker'
 import { KCPP_worker_wrapper } from 'k-colors/worker/wrapper'
 
-const kcpp = new KCPP_worker_wrapper(new KCPP_worker(), img)
-const result = await kcpp.k_colors_pp(3)
+const worker = new KCPP_worker()
+const kcpp = new KCPP_worker_wrapper(worker, img)
+
+// perform k-means++
+const result = await kcpp.dominant(3)
+
+// perform k-means
+// const result = await kcpp.dominant(3, 'k_means')
+
+// get dominant colors
+const colors = result.colors
+
+// get dataurl of the clustered image
 const dataurl = result.get_clustered_dataurl()
-console.log(result.colors) // [ [255,255,255,200], [100,200,200,255], [0,10,20,255] ]
 ```

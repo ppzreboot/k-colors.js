@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import KCPP_worker from 'k-colors/worker/worker?worker'
+import KCPP_worker from 'k-colors/worker?worker'
 import { KCPP_worker_wrapper } from 'k-colors/worker/wrapper'
 import type { Color, Colors } from 'k-colors/types'
 
