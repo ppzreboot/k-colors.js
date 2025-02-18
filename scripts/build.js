@@ -22,9 +22,6 @@ async function main() {
     entryPoints: [
       './lib/**/*',
     ],
-    target: 'es2020',
-    format: 'esm',
-    // external: ['k-means-pp'],
     bundle: false,
     logLevel: 'debug',
     outdir,
@@ -34,26 +31,6 @@ async function main() {
 }
 
 function write_package() {
-  fs.writeFileSync(outdir + 'package.json', JSON.stringify({
-    name: 'k-colors',
-    version: pkg.version,
-    exports: {
-      '.': './mod.js',
-      './worker': './worker/index.js',
-      './worker/helper': './worker/helper.js'
-    },
-    keywords: [
-      'color',
-      'k-means++',
-      'k-means',
-      'kmeans'
-    ],
-    author: 'PPz',
-    dependencies: pkg.dependencies,
-    repository: 'github:ppzreboot/k-colors.js',
-    license: 'UNLICENSED',
-    bugs: {
-      url: 'https://github.com/ppzreboot/k-colors.js/issues'
-    },
-  }, null, 2))
+  const { scripts, devDependencies, ...useful } = pkg
+  fs.writeFileSync(outdir + 'package.json', JSON.stringify(useful, null, 2))
 }

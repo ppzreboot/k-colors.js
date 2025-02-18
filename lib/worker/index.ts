@@ -1,9 +1,10 @@
-import type { I_input } from './type'
+import type { I_request } from './type'
 import { k_colors } from '../k-colors'
 
 self.onmessage = function(event: MessageEvent) {
-  const input = event.data as I_input
-  postMessage(
-    k_colors(input.all_colors, input.k, input.range)
-  )
+  const req = event.data as I_request
+  postMessage({
+    id: req.id,
+    message: k_colors(req.message.all_colors, req.message.k, req.message.range),
+  })
 }

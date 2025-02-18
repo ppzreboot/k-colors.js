@@ -1,6 +1,6 @@
-export * from './type'
+export type * from './type'
 export * from './input'
 export * from './k-colors'
 export * from './output'
 
-export { I_cluster, calc_range, I_range } from 'k-means-pp'
+export { type I_cluster, type I_range, calc_range } from 'k-means-pp'

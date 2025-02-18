@@ -1,7 +1,13 @@
 import { useState, useMemo, useEffect } from 'react'
-import KCPP_worker from 'k-colors/worker?worker'
-import { KCPP_worker_wrapper } from 'k-colors/worker/wrapper'
-import type { Color, Colors } from 'k-colors/types'
+import { KC_worker_helper } from 'k-colors/worker/helper'
+import {
+  calc_range,
+  clusters_2_img_data,
+  img_2_img_data,
+  img_data_2_colors,
+  img_data_2_img_blob,
+  type I_color,
+} from 'k-colors'
 
 const img_style = {
   maxWidth: `min(500px, 100%)`,
@@ -84,25 +90,42 @@ function useInput_k() {
 function usePallet(img: HTMLImageElement | null, k: number | null) {
   const [working, set_working] = useState(false)
 
-  const kcpp = useMemo(
-    () => img ? new KCPP_worker_wrapper(new KCPP_worker(), img) : null,
-    [img],
-  )
+  const kc = useMemo(() =>
+    KC_worker_helper(new Worker('./worker.ts', { type: 'module' }))
+  , [])
 
-  const [colors, set_colors] = useState<Colors | null>(null)
+  const [colors, set_colors] = useState<I_color[] | null>(null)
   const [clustered_img, set_clustered_img] = useState<string | null>(null)
-  useEffect(() => {
-    if (kcpp && k) {
-      set_working(true)
-      kcpp.dominant(k).then(result => {
-        set_colors(result.colors)
-        set_clustered_img(result.get_clustered_dataurl())
-        set_working(false)
-      })
-    }
-  }, [kcpp, k])
 
-  const [focused_color, set_focused_color] = useState<Color | null>(null)
+  useEffect(() => {
+    if (img === null || k === null)
+      return
+
+    set_working(true)
+    work(img, k)
+      .then(() =>
+        set_working(false)
+      )
+
+    async function work(img: HTMLImageElement, k: number) {
+      const all_colors = img_data_2_colors(
+        img_2_img_data(img)
+      )
+      const range = calc_range(4, all_colors)
+      const clusters = await kc(all_colors, k, range)
+      set_colors(clusters.map(cluster => cluster.mean))
+      const img_blob = await img_data_2_img_blob(
+        clusters_2_img_data(
+          clusters, img.width, img.height
+        )
+      )
+      set_clustered_img(
+        URL.createObjectURL(img_blob)
+      )
+    }
+  }, [img, k])
+
+  const [focused_color, set_focused_color] = useState<I_color | null>(null)
   useEffect(() => {
     if (colors) {
       set_focused_color(colors[0])

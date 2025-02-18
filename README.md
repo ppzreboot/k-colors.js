@@ -42,3 +42,14 @@ const colors = result.colors
 // get dataurl of the clustered image
 const dataurl = result.get_clustered_dataurl()
 ```
+
+### DEV
++ For simplicity, don't use workspace or other monorepo tool chain. Just `esbuild` and `node:fs`.
++ Open another vscode window for the demo app.
+
+##### pack for demo
+``` bash
+npm run build
+cd dist
+npm pack
+```

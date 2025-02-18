@@ -1,6 +1,22 @@
 {
+  "name": "k-colors",
   "version": "0.2.0",
+  "author": "PPz",
+
   "type": "module",
+  "repository": "github:ppzreboot/k-colors.js",
+  "license": "UNLICENSED",
+
+  "exports": {
+    ".": "./mod.js",
+    "./worker": "./worker/index.js",
+    "./worker/helper": "./worker/helper.js"
+  },
+
+  "dependencies": {
+    "k-means-pp": "^3.1.0"
+  },
+
   "scripts": {
     "build": "node scripts/build.js",
     "publish-demo": "gh-pages -d demo/dist"
@@ -11,8 +27,5 @@
     "esbuild-plugin-d.ts": "^1.3.0",
     "gh-pages": "^6.1.1",
     "typescript": "^5.5.3"
-  },
-  "dependencies": {
-    "k-means-pp": "^3.1.0"
   }
 }

@@ -1,12 +1,12 @@
 import type { I_range } from 'k-means-pp'
 import type { I_color } from '../type'
-import type { I_output, I_request } from './type'
+import type { I_output, I_response, I_request } from './type'
 export * from './type'
 
 let id = 0
 
 export
-function kc_worker_helper(worker: Worker) {
+function KC_worker_helper(worker: Worker) {
   // map: id -> resolve
   const jobs = new Map<number, (o: I_output) => void>()
 
@@ -20,8 +20,8 @@ function kc_worker_helper(worker: Worker) {
 
   // receive and resolve
   worker.onmessage = (evt: MessageEvent) => {
-    const res = evt.data as I_output
-    jobs.get(evt.data.id)!(res)
+    const res = evt.data as I_response
+    jobs.get(res.id)!(res.message)
   }
 
   return (all_colors: I_color[], k: number, range: I_range) =>
