@@ -38,9 +38,9 @@ function write_package() {
     name: 'k-colors',
     version: pkg.version,
     exports: {
-      '.': 'mod.js',
-      './worker': 'worker/index.js',
-      './worker/helper': 'worker/helper.js'
+      '.': './mod.js',
+      './worker': './worker/index.js',
+      './worker/helper': './worker/helper.js'
     },
     keywords: [
       'color',
