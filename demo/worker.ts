@@ -1,1 +1,0 @@
-import 'k-colors/worker'

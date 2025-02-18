@@ -8,6 +8,7 @@ import {
   img_data_2_img_blob,
   type I_color,
 } from 'k-colors'
+import KC_worker from 'k-colors/worker?worker'
 
 const img_style = {
   maxWidth: `min(500px, 100%)`,
@@ -91,7 +92,7 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
   const [working, set_working] = useState(false)
 
   const kc = useMemo(() =>
-    KC_worker_helper(new Worker('./worker.ts', { type: 'module' }))
+    KC_worker_helper(new KC_worker())
   , [])
 
   const [colors, set_colors] = useState<I_color[] | null>(null)
