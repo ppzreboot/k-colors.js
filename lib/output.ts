@@ -4,20 +4,13 @@ export
 function clusters_2_img_data(clusters: I_cluster[], width: number, height: number) {
   const px_count = width * height
   const data = new Uint8ClampedArray(px_count * 4)
-  for (let i=0; i<px_count; i++) {
-    let found = false
-    for (const c of clusters)
-      if (c.indices.includes(i)) {
-        data[i * 4] = c.mean[0]
-        data[i * 4 + 1] = c.mean[1]
-        data[i * 4 + 2] = c.mean[2]
-        data[i * 4 + 3] = c.mean[3] ?? 255
-        found = true
-        break
-      }
-    if (!found)
-      throw Error('No cluster found for pixel at index ' + i)
-  }
+  for (const c of clusters)
+    for (const i of c.indices) {
+      data[i * 4] = c.mean[0]
+      data[i * 4 + 1] = c.mean[1]
+      data[i * 4 + 2] = c.mean[2]
+      data[i * 4 + 3] = c.mean[3] ?? 255
+    }
   return new ImageData(data, width, height)
 }
 
