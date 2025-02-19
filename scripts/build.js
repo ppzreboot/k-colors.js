@@ -19,9 +19,7 @@ async function main() {
 
   // build lib
   await build({
-    entryPoints: [
-      './lib/**/*',
-    ],
+    entryPoints: ['./lib/**/*'],
     bundle: false,
     logLevel: 'debug',
     outdir,

@@ -11,7 +11,7 @@ import {
 import KC_worker from 'k-colors/worker?worker'
 
 const img_style = {
-  maxWidth: `min(500px, 100%)`,
+  maxWidth: 'min(500px, 100%)',
 }
 
 export
