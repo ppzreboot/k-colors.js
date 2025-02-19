@@ -12091,6 +12091,7 @@ function useInput_k() {
 }
 function usePallet(img, k) {
   const [working, set_working] = reactExports.useState(false);
+  const [time, set_time] = reactExports.useState(null);
   const kc = reactExports.useMemo(
     () => KC_worker_helper(new WorkerWrapper()),
     []
@@ -12101,9 +12102,11 @@ function usePallet(img, k) {
     if (img === null || k === null)
       return;
     set_working(true);
-    work(img, k).then(
-      () => set_working(false)
-    );
+    const start = performance.now();
+    work(img, k).then(() => {
+      set_working(false);
+      set_time(performance.now() - start);
+    });
     async function work(img2, k2) {
       const all_colors = img_data_2_colors(
         img_2_img_data(img2)
@@ -12149,6 +12152,11 @@ function usePallet(img, k) {
           focused_color == null ? void 0 : focused_color.join(","),
           ")"
         ] })
+      ] }),
+      time && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+        "time: ",
+        time,
+        "ms"
       ] }),
       clustered_img && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { children: "Clustered Image" }),
