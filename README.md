@@ -48,3 +48,12 @@ npm pack
 cd ../demo
 npm install ../dist/k-colors-xxx.tgz
 ```
+
+##### publish demo
+
+```bash
+cd demo
+npm run build
+cd ..
+npm run publish-demo
+```
