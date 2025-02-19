@@ -90,6 +90,7 @@ function useInput_k() {
 
 function usePallet(img: HTMLImageElement | null, k: number | null) {
   const [working, set_working] = useState(false)
+  const [time, set_time] = useState<number | null>(null)
 
   const kc = useMemo(() =>
     KC_worker_helper(new KC_worker())
@@ -103,10 +104,12 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
       return
 
     set_working(true)
+    const start = performance.now()
     work(img, k)
-      .then(() =>
+      .then(() => {
         set_working(false)
-      )
+        set_time(performance.now() - start)
+      })
 
     async function work(img: HTMLImageElement, k: number) {
       const all_colors = img_data_2_colors(
@@ -153,6 +156,9 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
               </ul>
               <span>rgba({focused_color?.join(',')})</span>
             </div>
+          }
+          {time &&
+            <div>time: {time}ms</div>
           }
           {clustered_img &&
             <>
