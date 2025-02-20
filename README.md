@@ -30,7 +30,7 @@ const range = {
   min: [0, 0, 0, 0],
   max: [255, 255, 255, 255],
 }
-const clusters = kwh(colors, 6, range)
+const clusters = await kwh(colors, 6, range)
 console.log('clustered colors:',
   clusters.map(c => c.mean)
 )
