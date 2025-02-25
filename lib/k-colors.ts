@@ -1,7 +1,14 @@
-import { k_means_pp, calc_range, I_range } from 'k-means-pp'
+import { k_means_pp, calc_range, I_range, has_enough_unique_points } from 'k-means-pp'
 import { I_color } from './type'
 import { img_2_img_data, img_data_2_colors } from './input'
 import { clusters_2_img_data, img_data_2_img_blob } from './output'
+
+export
+function has_enough_unique_colors(all_colors: I_color[], k: number): boolean {
+  if (all_colors.length < k)
+    return false
+  return has_enough_unique_points(all_colors[0].length, all_colors, k)[0]
+}
 
 export
 function k_colors(all_colors: I_color[], k: number, range?: I_range) {

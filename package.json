@@ -1,6 +1,6 @@
 {
   "name": "k-colors",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "PPz",
 
   "type": "module",
@@ -14,7 +14,7 @@
   },
 
   "dependencies": {
-    "k-means-pp": "^3.1.0"
+    "k-means-pp": "^3.2.0"
   },
 
   "scripts": {

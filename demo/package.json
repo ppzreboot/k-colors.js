@@ -5,7 +5,7 @@
     "build": "tsc -b && vite build"
   },
   "dependencies": {
-    "k-colors": "file:../dist/k-colors-0.2.0.tgz",
+    "k-colors": "file:../dist/k-colors-0.3.0.tgz",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
