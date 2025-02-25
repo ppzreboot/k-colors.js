@@ -26,6 +26,10 @@ async function k_colors_oob(source: HTMLImageElement, k: number, opts: ImageEnco
   const { width, height } = source
   const img_data = img_2_img_data(source)
   const all_colors = img_data_2_colors(img_data)
+  
+  if (!has_enough_unique_colors(all_colors, k))
+    return source
+
   const clusters = k_colors(all_colors, k)
   const new_img_data = clusters_2_img_data(clusters, width, height)
   const blob = await img_data_2_img_blob(new_img_data, opts)
