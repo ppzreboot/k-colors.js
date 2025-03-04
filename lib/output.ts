@@ -1,15 +1,15 @@
-import { I_cluster } from 'k-means-pp'
+import { I_rgb_cluster } from './type'
 
 export
-function clusters_2_img_data(clusters: I_cluster[], width: number, height: number) {
+function clusters_2_img_data(clusters: I_rgb_cluster[], width: number, height: number) {
   const px_count = width * height
   const data = new Uint8ClampedArray(px_count * 4)
   for (const c of clusters)
     for (const i of c.indices) {
-      data[i * 4] = c.mean[0]
-      data[i * 4 + 1] = c.mean[1]
-      data[i * 4 + 2] = c.mean[2]
-      data[i * 4 + 3] = c.mean[3] ?? 255
+      data[i * 4] = c.mean.r
+      data[i * 4 + 1] = c.mean.g
+      data[i * 4 + 2] = c.mean.b
+      data[i * 4 + 3] = 255
     }
   return new ImageData(data, width, height)
 }

@@ -1,6 +1,6 @@
 {
   "name": "k-colors",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": "PPz",
 
   "type": "module",
@@ -14,7 +14,9 @@
   },
 
   "dependencies": {
-    "k-means-pp": "^3.2.0"
+    "color-convert": "^3.0.1",
+    "delta-e": "^0.0.8",
+    "k-means-pp": "^4.0.0"
   },
 
   "scripts": {
@@ -22,8 +24,9 @@
     "publish-demo": "gh-pages -d demo/dist"
   },
   "devDependencies": {
+    "@types/delta-e": "^0.0.2",
     "@types/node": "^22.5.4",
-    "esbuild": "^0.23.1",
+    "esbuild": "^0.25.0",
     "esbuild-plugin-d.ts": "^1.3.0",
     "gh-pages": "^6.1.1",
     "typescript": "^5.5.3"

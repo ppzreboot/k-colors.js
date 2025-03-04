@@ -1,42 +1,65 @@
-import { k_means_pp, calc_range, I_range, has_enough_unique_points } from 'k-means-pp'
-import { I_color } from './type'
-import { img_2_img_data, img_data_2_colors } from './input'
-import { clusters_2_img_data, img_data_2_img_blob } from './output'
+import convert from 'color-convert'
+import delta_e from 'delta-e'
+import { k_means_pp, I_range, has_enough_unique_points } from 'k-means-pp'
+import { I_rgb_cluster, I_rgb, I_lab, I_lab_cluster } from './type'
 
 export
-function has_enough_unique_colors(all_colors: I_color[], k: number): boolean {
+function has_enough_unique_colors(all_colors: I_rgb[], k: number): boolean {
   if (all_colors.length < k)
     return false
-  return has_enough_unique_points(all_colors[0].length, all_colors, k)[0]
+  const colors = all_colors.map(rgb => [rgb.r, rgb.g, rgb.b])
+  return has_enough_unique_points(3, colors, k)[0]
+}
+
+interface I_k_colors_opts {
+  all_colors: I_lab[]
+  k: number
+  range?: I_range
 }
 
 export
-function k_colors(all_colors: I_color[], k: number, range?: I_range) {
-  const d = all_colors[0].length
-  range = range ?? calc_range(d, all_colors)
-  const [clusters] = k_means_pp(d, all_colors, k, range)
-  for (const c of clusters) // round the mean values
-    c.mean = c.mean.map(n => Math.round(n))
-  return clusters
+function k_colors(opts: I_k_colors_opts): I_lab_cluster[] {
+  const [clusters] = k_means_pp({
+    dimension: 3,
+    points: opts.all_colors,
+    k: opts.k,
+    range: opts.range,
+    quantify: (_, X, Y) =>
+      delta_e.getDeltaE00(
+        { L: X[0], A: X[1], B: X[2] },
+        { L: Y[0], A: Y[1], B: Y[2] },
+      )
+  })
+  return clusters.map(item => ({
+    mean: item.mean.map(n => Math.round(n)) as I_lab,
+    indices: item.indices,
+  }))
 }
 
-/** k_colors Out Of Box */
-export default
-async function k_colors_oob(source: HTMLImageElement, k: number, opts: ImageEncodeOptions) {
-  const { width, height } = source
-  const img_data = img_2_img_data(source)
-  const all_colors = img_data_2_colors(img_data)
-  
-  if (!has_enough_unique_colors(all_colors, k))
-    return source
+interface I_k_colors_rgb_opts {
+  all_colors: I_rgb[]
+  k: number
+  range?: I_range
+}
 
-  const clusters = k_colors(all_colors, k)
-  const new_img_data = clusters_2_img_data(clusters, width, height)
-  const blob = await img_data_2_img_blob(new_img_data, opts)
-  const img = new Image()
-  return await new Promise<HTMLImageElement>((res, rej) => {
-    img.onload = () => res(img)
-    img.onerror = rej
-    img.src = URL.createObjectURL(blob)
+export
+function k_colors_rgb(opts: I_k_colors_rgb_opts): I_rgb_cluster[] {
+  // convert all colors to lab
+  const lab_colors = opts.all_colors.map(rgb =>
+    convert.rgb.lab([rgb.r, rgb.g, rgb.b])
+  )
+  // run k-means
+  const clusters = k_colors({
+    all_colors: lab_colors,
+    k: opts.k,
+    range: opts.range,
+  })
+  // convert the mean values back to rgba
+  return clusters.map(c => {
+    const rgb = convert.lab.rgb(c.mean)
+    return {
+      mean: { r: rgb[0], g: rgb[1], b: rgb[2] },
+      indices: c.indices,
+    } 
   })
 }
