@@ -1,7 +1,12 @@
 import convert from 'color-convert'
 import delta_e from 'delta-e'
-import { k_means_pp, has_enough_unique_points } from 'k-means-pp'
+import { k_means_pp, has_enough_unique_points, calc_range } from 'k-means-pp'
 import { I_rgb_cluster, I_lab_range, I_rgb, I_lab, I_lab_cluster } from './type'
+
+export
+function calc_lab_range(lab_colors: I_lab[]): I_lab_range {
+  return calc_range(3, lab_colors) as I_lab_range
+}
 
 export
 function has_enough_unique_colors(all_colors: I_rgb[], k: number): boolean {

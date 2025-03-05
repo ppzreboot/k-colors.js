@@ -1,5 +1,5 @@
 import convert from 'color-convert'
-import { I_rgb_cluster, I_lab, I_rgb } from './type'
+import { I_rgb_cluster, I_lab, I_rgb, I_lab_cluster } from './type'
 
 export
 function lab_2_rgb(lab: I_lab): I_rgb {
@@ -8,7 +8,20 @@ function lab_2_rgb(lab: I_lab): I_rgb {
 }
 
 export
-function clusters_2_img_data(clusters: I_rgb_cluster[], width: number, height: number) {
+function lab_cluster_2_rgb_cluster(cluster: I_lab_cluster): I_rgb_cluster {
+  return {
+    mean: lab_2_rgb(cluster.mean),
+    indices: cluster.indices,
+  }
+}
+
+export
+function lab_clusters_2_rgb_clusters(clusters: I_lab_cluster[]): I_rgb_cluster[] {
+  return clusters.map(lab_cluster_2_rgb_cluster)
+}
+
+export
+function rgb_clusters_2_img_data(clusters: I_rgb_cluster[], width: number, height: number) {
   const px_count = width * height
   const data = new Uint8ClampedArray(px_count * 4)
   for (const c of clusters)

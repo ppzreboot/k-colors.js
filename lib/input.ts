@@ -2,11 +2,6 @@ import convert from 'color-convert'
 import { I_rgba, I_rgb, I_lab } from './type'
 
 export
-function rgb_2_lab(rgb: I_rgb): I_lab {
-  return convert.rgb.lab([rgb.r, rgb.g, rgb.b])
-}
-
-export
 function img_2_img_data(img: HTMLImageElement) {
   const canvas = new OffscreenCanvas(img.width, img.height)
   const ctx = canvas.getContext('2d')!
@@ -42,4 +37,9 @@ function rgba_2_rgb(fore: I_rgba, back: I_rgb): I_rgb {
     g: new_val(fore.g, back.g),
     b: new_val(fore.b, back.b),
   }
+}
+
+export
+function rgb_2_lab(rgb: I_rgb): I_lab {
+  return convert.rgb.lab([rgb.r, rgb.g, rgb.b])
 }

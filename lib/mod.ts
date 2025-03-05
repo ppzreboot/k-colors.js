@@ -1,5 +1,3 @@
-export { calc_range } from 'k-means-pp'
-
 export type * from './type'
 export * from './input'
 export * from './k-colors'

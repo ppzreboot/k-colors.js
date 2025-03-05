@@ -1,7 +1,7 @@
 import { I_rgb } from './type'
 import { has_enough_unique_colors, k_colors_rgb } from './k-colors'
 import { img_2_img_data, img_data_2_rgba, rgba_2_rgb } from './input'
-import { clusters_2_img_data, img_data_2_img_blob } from './output'
+import { rgb_clusters_2_img_data, img_data_2_img_blob } from './output'
 
 export
 interface I_k_colors_oob_opts {
@@ -29,7 +29,7 @@ async function k_colors_oob(opts: I_k_colors_oob_opts) {
     ),
     k: opts.k,
   })
-  const new_img_data = clusters_2_img_data(clusters, width, height)
+  const new_img_data = rgb_clusters_2_img_data(clusters, width, height)
   const blob = await img_data_2_img_blob(new_img_data, opts.img_encode_opts)
   const img = new Image()
   return await new Promise<HTMLImageElement>((res, rej) => {
