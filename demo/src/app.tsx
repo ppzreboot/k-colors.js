@@ -1,14 +1,19 @@
 import { useState, useMemo, useEffect } from 'react'
 import { KC_worker_helper } from 'k-colors/worker/helper'
 import {
-  calc_range,
-  clusters_2_img_data,
+  calc_lab_range,
+  rgb_clusters_2_img_data,
   img_2_img_data,
-  img_data_2_colors,
+  img_data_2_rgba,
+  rgb_2_lab,
+  rgba_2_rgb,
   img_data_2_img_blob,
-  type I_color,
+  I_rgb,
+  lab_clusters_2_rgb_clusters,
+  // k_colors,
 } from 'k-colors'
-import KC_worker from 'k-colors/worker?worker'
+// import KC_worker from 'k-colors/worker?worker'
+import KC_worker from './worker.js?worker'
 
 const img_style = {
   maxWidth: 'min(500px, 100%)',
@@ -96,7 +101,7 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
     KC_worker_helper(new KC_worker())
   , [])
 
-  const [colors, set_colors] = useState<I_color[] | null>(null)
+  const [colors, set_colors] = useState<I_rgb[] | null>(null)
   const [clustered_img, set_clustered_img] = useState<string | null>(null)
 
   useEffect(() => {
@@ -112,16 +117,31 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
       })
 
     async function work(img: HTMLImageElement, k: number) {
-      const all_colors = img_data_2_colors(
-        img_2_img_data(img)
-      )
-      const range = calc_range(4, all_colors)
-      const clusters = await kc(all_colors, k, range)
-      set_colors(clusters.map(cluster => cluster.mean))
-      const img_blob = await img_data_2_img_blob(
-        clusters_2_img_data(
-          clusters, img.width, img.height
+      const all_colors = img_data_2_rgba(img_2_img_data(img))
+        .map(rgba =>
+          rgb_2_lab(
+            rgba_2_rgb(rgba, { r: 255, g: 255, b: 255 })
+          )
         )
+      console.log('all lab colors:', all_colors)
+
+      const range = calc_lab_range(all_colors)
+      console.log('lab range:', range)
+
+      const clusters = await kc(all_colors, k, range)
+      // const clusters = k_colors({
+      //   all_colors, k, range
+      // })
+      console.log('lab clusters:', clusters)
+      const rgb_clusters = lab_clusters_2_rgb_clusters(clusters)
+
+      set_colors(rgb_clusters.map(cluster => ({
+        r: cluster.mean.r,
+        g: cluster.mean.g,
+        b: cluster.mean.b,
+      })))
+      const img_blob = await img_data_2_img_blob(
+        rgb_clusters_2_img_data(rgb_clusters, img.width, img.height)
       )
       set_clustered_img(
         URL.createObjectURL(img_blob)
@@ -129,12 +149,15 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
     }
   }, [img, k])
 
-  const [focused_color, set_focused_color] = useState<I_color | null>(null)
+  const [focused_color, set_focused_color] = useState<I_rgb | null>(null)
   useEffect(() => {
     if (colors) {
       set_focused_color(colors[0])
     }
   }, [colors])
+
+  const rgba_str = (color: I_rgb) =>
+    `rgba(${color.r},${color.g},${color.b})`
 
   return {
     colors,
@@ -149,12 +172,14 @@ function usePallet(img: HTMLImageElement | null, k: number | null) {
                 {colors.map((color, i) =>
                   <li
                     key={i}
-                    style={{ backgroundColor: `rgba(${color.join(',')})` }}
+                    style={{ backgroundColor: rgba_str(color) }}
                     onMouseEnter={() => set_focused_color(color)}
                   />
                 )}
               </ul>
-              <span>rgba({focused_color?.join(',')})</span>
+              {focused_color &&
+                <span>rgba({rgba_str(focused_color)})</span>
+              }
             </div>
           }
           {time &&
