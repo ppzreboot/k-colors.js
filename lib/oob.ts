@@ -12,7 +12,7 @@ interface I_k_colors_oob_opts {
 }
 
 /** k_colors Out Of Box */
-export
+export default
 async function k_colors_oob(opts: I_k_colors_oob_opts) {
   const base_color = opts.base_color ?? { r: 255, g: 255, b: 255 }
 

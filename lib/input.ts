@@ -1,4 +1,10 @@
-import { I_rgba, I_rgb } from './type'
+import convert from 'color-convert'
+import { I_rgba, I_rgb, I_lab } from './type'
+
+export
+function rgb_2_lab(rgb: I_rgb): I_lab {
+  return convert.rgb.lab([rgb.r, rgb.g, rgb.b])
+}
 
 export
 function img_2_img_data(img: HTMLImageElement) {

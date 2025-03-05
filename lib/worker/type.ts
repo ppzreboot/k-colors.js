@@ -1,12 +1,11 @@
-import type { I_range } from 'k-means-pp'
 import type { k_colors } from '../k-colors'
-import type { I_lab } from '../type'
+import type { I_lab, I_lab_range } from '../type'
 
 export
 interface I_input {
   all_colors: I_lab[]
   k: number
-  range: I_range
+  range: I_lab_range
 }
 
 export

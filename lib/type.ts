@@ -1,7 +1,5 @@
 import { I_cluster } from 'k-means-pp'
 
-export { I_cluster } from 'k-means-pp'
-
 export
 interface I_rgb {
   r: number
@@ -25,4 +23,10 @@ export
 interface I_rgb_cluster  {
   mean: I_rgb
   indices: number[]
+}
+
+export
+interface I_lab_range {
+  min: I_lab
+  max: I_lab
 }

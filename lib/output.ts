@@ -1,4 +1,11 @@
-import { I_rgb_cluster } from './type'
+import convert from 'color-convert'
+import { I_rgb_cluster, I_lab, I_rgb } from './type'
+
+export
+function lab_2_rgb(lab: I_lab): I_rgb {
+  const rgb = convert.lab.rgb(lab)
+  return { r: rgb[0], g: rgb[1], b: rgb[2] }
+}
 
 export
 function clusters_2_img_data(clusters: I_rgb_cluster[], width: number, height: number) {

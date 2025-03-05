@@ -1,5 +1,4 @@
-import type { I_range } from 'k-means-pp'
-import type { I_lab } from '../type'
+import type { I_lab, I_lab_range } from '../type'
 import type { I_output, I_response, I_request } from './type'
 export * from './type'
 
@@ -24,7 +23,7 @@ function KC_worker_helper(worker: Worker) {
     jobs.get(res.id)!(res.message)
   }
 
-  return (all_colors: I_lab[], k: number, range: I_range) =>
+  return (all_colors: I_lab[], k: number, range: I_lab_range) =>
     post({
       id: ++id,
       message: { all_colors, k, range },

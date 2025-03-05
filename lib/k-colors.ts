@@ -1,7 +1,7 @@
 import convert from 'color-convert'
 import delta_e from 'delta-e'
-import { k_means_pp, I_range, has_enough_unique_points } from 'k-means-pp'
-import { I_rgb_cluster, I_rgb, I_lab, I_lab_cluster } from './type'
+import { k_means_pp, has_enough_unique_points } from 'k-means-pp'
+import { I_rgb_cluster, I_lab_range, I_rgb, I_lab, I_lab_cluster } from './type'
 
 export
 function has_enough_unique_colors(all_colors: I_rgb[], k: number): boolean {
@@ -14,7 +14,7 @@ function has_enough_unique_colors(all_colors: I_rgb[], k: number): boolean {
 interface I_k_colors_opts {
   all_colors: I_lab[]
   k: number
-  range?: I_range
+  range?: I_lab_range
 }
 
 export
@@ -39,7 +39,7 @@ function k_colors(opts: I_k_colors_opts): I_lab_cluster[] {
 interface I_k_colors_rgb_opts {
   all_colors: I_rgb[]
   k: number
-  range?: I_range
+  range?: I_lab_range
 }
 
 export
